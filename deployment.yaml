@@ -86,6 +86,3 @@ spec:
         - name: nginx-conf
           configMap:
             name: nginx-conf
-            items:
-              - key: nginx.conf
-                path: nginx.conf
