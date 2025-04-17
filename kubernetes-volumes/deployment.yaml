@@ -48,7 +48,7 @@ spec:
           command:
             - "/bin/sh"
             - "-c"
-            - "touch /init/index.html; echo '<html><body><title>OTUS: Homework № 3 </title></body></html>' > /init/index.html"
+            - "touch /init/index.html; echo '<html><body><title>OTUS: Homework № 4 </title></body></html>' > /init/index.html"
           volumeMounts:
             - mountPath: /init
               name: data
@@ -58,12 +58,14 @@ spec:
           ports:
             - containerPort: 8000
           volumeMounts:
-            - mountPath: /homework
-              name: data
+            - name: data
+              mountPath: /homework
             - name: nginx-conf
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
               readOnly: true
+            - name: new-configmap
+              mountPath: /homework/conf
           readinessProbe:
             initialDelaySeconds: 0
             periodSeconds: 5
@@ -77,11 +79,15 @@ spec:
             preStop:
               exec:
                 command: [ 'sh','-c', 'rm -rf /homework/index.html' ]
-      #nodeSelector:
-        #homework: 'true'
+      nodeSelector:
+        homework: 'true'
       volumes:
         - name: data
-          emptyDir: { }
+          persistentVolumeClaim:
+            claimName: homework-pvc
         - name: nginx-conf
           configMap:
             name: nginx-conf
+        - name: new-configmap
+          configMap:
+            name: random-configmap
