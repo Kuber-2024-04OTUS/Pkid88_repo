@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: random-configmap
+  namespace: homework
+data:
+  ping: "test"
+  myweb: "nginx"
+  index.html: |
+    OTUS HOMEWORK VOLUMES!
